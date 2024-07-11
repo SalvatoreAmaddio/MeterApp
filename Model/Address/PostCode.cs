@@ -26,7 +26,7 @@ namespace MeterApp.Model
         #region Constructors
         public PostCode() 
         { 
-            SelectQry = this.Select().All().Fields("CityName").From().InnerJoin(new City()).ToString();
+            SelectQry = this.Select().All().Fields("CityName").From().InnerJoin(new City()).Statement();
         }
         public PostCode(long id) : this() => _postcodeId = id;
         public PostCode(long id, string code) : this(id) => _code = code;
@@ -35,7 +35,7 @@ namespace MeterApp.Model
         {
             _postcodeId = reader.GetInt64(0);
             _code = reader.GetString(1);
-            _city = new(reader.GetInt64(2), reader.GetString(4));
+            _city = new(reader.GetInt64(2), reader.GetString(3));
         }
         #endregion
 

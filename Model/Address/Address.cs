@@ -37,7 +37,7 @@ namespace MeterApp.Model
         { 
             SelectQry = this.Select().All().Fields("Code").Fields("City.*")
                         .From().InnerJoin(new PostCode())
-                        .InnerJoin(nameof(City),nameof(PostCode), "CityID")
+                        .InnerJoin(nameof(PostCode), nameof(City), "CityID")
                         .Statement();
         }
 
