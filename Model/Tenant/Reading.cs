@@ -27,14 +27,36 @@ namespace MeterApp.Model
         #endregion
 
         #region Constructors
-        public Reading() { }
-        public Reading(long id) => _readingId = id;
-        public Reading(DbDataReader reader) 
+        public Reading()
+        {
+            SelectQry = this.Select().Fields("Reading.ReadingID", "Reading.ReadValue", "Reading.DOR", "TenantAddress.*", "Tenant.FirstName", "Tenant.LastName", "Address.StreetNum", "Address.StreetName", "Address.OtherInfo", "Address.MeterNumber", "PostCode.*", "CityName")
+                        .From()
+                        .InnerJoin(new TenantAddress())
+                        .InnerJoin(nameof(TenantAddress), nameof(Tenant), "TenantID")
+                        .InnerJoin(nameof(TenantAddress), nameof(Address), "AddressID")
+                        .InnerJoin(nameof(Address), nameof(PostCode), "PostCodeID")
+                        .InnerJoin(nameof(PostCode), nameof(City), "CityID")
+                        .Statement();
+        }
+        public Reading(long id) : this() => _readingId = id;
+        public Reading(long id, string readValue, DateTime? dor, TenantAddress tenantAddress) : this(id)
+        {
+            _readValue = readValue;
+            _dor = dor;
+            _tenantAddress = tenantAddress;
+        }
+        public Reading(DbDataReader reader)
         {
             _readingId = reader.GetInt64(0);
-            _tenantAddress = new(reader.GetInt64(1));
-            _readValue = reader.GetString(2);
-            _dor = reader.TryFetchDate(3);
+            _readValue = reader.GetString(1);
+            _dor = reader.TryFetchDate(2);
+            _tenantAddress = new(reader.GetInt64(3), reader.TryFetchDate(4), reader.TryFetchDate(4), reader.GetBoolean(5),
+                new Tenant(reader.GetInt64(6), reader.GetString(7), reader.GetString(8)),
+                new Address(reader.GetInt64(9), reader.GetString(10), reader.GetString(11), reader.GetString(12), reader.GetString(13), 
+                            new PostCode(reader.GetInt64(14), reader.GetString(15), 
+                            new City(reader.GetInt64(16), reader.GetString(17))
+                            ))
+                );
         }
         #endregion
 

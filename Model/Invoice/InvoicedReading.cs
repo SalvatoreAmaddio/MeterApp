@@ -1,4 +1,5 @@
-﻿using Backend.Model;
+﻿using Backend.ExtensionMethods;
+using Backend.Model;
 using FrontEnd.Model;
 using System.Data.Common;
 
@@ -23,12 +24,17 @@ namespace MeterApp.Model
         #endregion
 
         #region Constructors
-        public InvoicedReading() { }
-        public InvoicedReading(DbDataReader reader) 
+        public InvoicedReading()
+        {
+            SelectQry = this.Select().All().Fields("Reading.ReadValue", "Reading.DOR", "Reading.TenantAddressID")
+                        .From().InnerJoin(new Reading())
+                        .Statement();
+        }
+        public InvoicedReading(DbDataReader reader) : this()
         {
             _invoicedReadingId = reader.GetInt64(0);
-            _invoice = new(reader.GetInt64(1));
-            _reading = new(reader.GetInt64(2));
+            _invoice = new(reader.GetInt64(1), new(reader.GetInt64(5)));
+            _reading = new(reader.GetInt64(2), reader.GetString(3), reader.TryFetchDate(4), new(reader.GetInt64(5)));
         }
         #endregion
 

@@ -22,7 +22,8 @@ namespace MeterApp.Model
         #region Constructors
         public City() { }
         public City(long id) => _cityId = id;
-        public City(DbDataReader reader) 
+        public City(long id, string name) : this(id) => _cityName = name;
+        public City(DbDataReader reader)
         {
             _cityId = reader.GetInt64(0);
             _cityName = reader.GetString(1);

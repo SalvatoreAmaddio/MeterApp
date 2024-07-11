@@ -1,6 +1,7 @@
 ﻿using FrontEnd.Model;
 using Backend.Model;
 using System.Data.Common;
+using Backend.ExtensionMethods;
 
 namespace MeterApp.Model
 {
@@ -23,13 +24,18 @@ namespace MeterApp.Model
         #endregion
 
         #region Constructors
-        public PostCode() { }
-        public PostCode(long id) => _postcodeId = id;
-        public PostCode(DbDataReader reader) 
+        public PostCode() 
+        { 
+            SelectQry = this.Select().All().Fields("CityName").From().InnerJoin(new City()).ToString();
+        }
+        public PostCode(long id) : this() => _postcodeId = id;
+        public PostCode(long id, string code) : this(id) => _code = code;
+        public PostCode(long id, string code, City city) : this(id, code) => _city = city;
+        public PostCode(DbDataReader reader) : this()
         {
             _postcodeId = reader.GetInt64(0);
             _code = reader.GetString(1);
-            _city = new(reader.GetInt64(2));
+            _city = new(reader.GetInt64(2), reader.GetString(4));
         }
         #endregion
 

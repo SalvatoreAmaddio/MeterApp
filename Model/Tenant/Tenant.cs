@@ -35,6 +35,11 @@ namespace MeterApp.Model
         #region Constructors
         public Tenant() { }
         public Tenant(long id) => _tenantId = id;
+        public Tenant(long id, string firstName, string lastName) : this(id)
+        { 
+            _firstName = firstName;
+            _lastName = lastName;
+        }
         public Tenant(DbDataReader reader) 
         {
             _tenantId = reader.GetInt64(0);
