@@ -16,6 +16,7 @@ namespace MeterApp
             DatabaseManager.Add(new SQLiteDatabase<PostCode>());
             DatabaseManager.Add(new SQLiteDatabase<Address>());
 
+            DatabaseManager.Add(new SQLiteDatabase<Pricing>());
             DatabaseManager.Add(new SQLiteDatabase<Invoice>());
             DatabaseManager.Add(new SQLiteDatabase<InvoicedReading>());
 
