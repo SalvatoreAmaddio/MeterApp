@@ -5,8 +5,35 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MeterApp.View"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        xmlns:fr="clr-namespace:FrontEnd.Forms;assembly=FrontEnd"
+        Title="Meter App" 
+        WindowStartupLocation="CenterScreen"
+        WindowState="Maximized">
+    
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <Menu>
+            <fr:OpenCurtain Command="{Binding OpenCurtainCMD}"/>
+            <MenuItem Header="Address">
+                <MenuItem Header="Cities" Command="{Binding OpenCityCMD}"/>
+                <MenuItem Header="Post Code" Command="{Binding OpenPostCodeCMD}"/>
+            </MenuItem>
+        </Menu>
 
+        <TabControl x:Name="MainTab" Grid.Row="1">
+            <TabItem Header="Tenants">
+                
+            </TabItem>
+            <TabItem Header="Addresses">
+
+            </TabItem>
+            <TabItem Header="Invoices">
+
+            </TabItem>
+        </TabControl>
     </Grid>
 </Window>
