@@ -1,5 +1,4 @@
-﻿using Backend.Database;
-using Backend.ExtensionMethods;
+﻿using Backend.ExtensionMethods;
 using Backend.Model;
 using FrontEnd.Controller;
 using FrontEnd.Source;
@@ -9,17 +8,20 @@ namespace MeterApp.Controller
 {
     public class TenantAddressController : AbstractFormController<TenantAddress>
     {
+        private bool _enabled = false;
+        public bool Enabled { get => _enabled; set => UpdateProperty(ref value, ref _enabled); }
         internal TenantAddressController() 
         { 
             AllowNewRecord = false;
         }
+
         public override async void OnSubFormFilter()
         {
             SearchQry.AddParameter("tenantID", ((Tenant?)ParentRecord)?.TenantID);
             RecordSource<TenantAddress> records = await CreateFromAsyncList(SearchQry.Statement(), SearchQry.Params());
             RecordSource.ReplaceRange(records);
             CurrentRecord = RecordSource.FirstOrDefault();
-            ReadOnly = (CurrentRecord == null) ? false : true;
+            Enabled = (CurrentRecord == null) ? false : true;
         }
 
         public override AbstractClause InstantiateSearchQry() =>

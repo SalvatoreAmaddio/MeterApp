@@ -15,7 +15,7 @@
         >
     
     <Window.Resources>
-        <local:StringConcat x:Key="strCnct"/>
+        <local:StringAddressConcat x:Key="stringAddressConcat"/>
         
         <Style TargetType="GroupBox">
             <Setter Property="BorderThickness" Value="1"/>
@@ -80,11 +80,11 @@
                 
                 <GroupBox Header="Current Address" Grid.Row="1" Grid.ColumnSpan="2">
                     <fr:SubForm ParentRecord="{Binding CurrentRecord}">
-                        <fr:Form DataContext="{Binding TenantAddressController}" Width="600" RecordTrackerRow="0" IsEnabled="{Binding ReadOnly}">
-                            <Grid fr:Definition.RowDefinitions="30,30,30,30,30" fr:Definition.ColumnDefinitions="70,110">
+                        <fr:Form DataContext="{Binding TenantAddressController}" Width="600" RecordTrackerRow="0" IsEnabled="{Binding Enabled}" Padding="5">
+                            <Grid fr:Definition.RowDefinitions="30,30,30,30,10,30" fr:Definition.ColumnDefinitions="70,110">
                                 <Label Grid.ColumnSpan="2">
                                     <Label.Content>
-                                        <MultiBinding Converter="{StaticResource strCnct}">
+                                        <MultiBinding Converter="{StaticResource stringAddressConcat}">
                                             <Binding Path="CurrentRecord.Address.StreetNum"/>
                                             <Binding Path="CurrentRecord.Address.StreetName"/>
                                             <Binding Path="CurrentRecord.Address.OtherInfo"/>
@@ -93,7 +93,7 @@
                                 </Label>
                                 <Label  Grid.ColumnSpan="2" Grid.Row="1">
                                     <Label.Content>
-                                        <MultiBinding Converter="{StaticResource strCnct}">
+                                        <MultiBinding Converter="{StaticResource stringAddressConcat}">
                                             <Binding Path="CurrentRecord.Address.PostCode.Code"/>
                                             <Binding Path="CurrentRecord.Address.PostCode.City.CityName"/>
                                         </MultiBinding>
@@ -103,6 +103,8 @@
                                 <fr:TextBoxDate Grid.Row="2" Grid.Column="1" Date="{Binding CurrentRecord.MovedIn}"/>
                                 <Label Grid.Row="3" Content="Moved out"/>
                                 <fr:TextBoxDate Grid.Row="3" Grid.Column="1" Date="{Binding CurrentRecord.MovedOut}"/>
+                                <fr:SaveButton Grid.Row="5"/>
+                                <fr:DeleteButton Grid.Row="5" Grid.Column="1" HorizontalAlignment="Left" Width="70"/>
                             </Grid>
                         </fr:Form>
                     </fr:SubForm>

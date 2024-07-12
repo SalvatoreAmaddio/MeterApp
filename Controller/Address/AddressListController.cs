@@ -6,8 +6,9 @@ using FrontEnd.Controller;
 using FrontEnd.Dialogs;
 using FrontEnd.Events;
 using FrontEnd.FilterSource;
-using FrontEnd.Forms;
+using FrontEnd.ExtensionMethods;
 using FrontEnd.Source;
+using FrontEnd.Utils;
 using MeterApp.Model;
 using System.Windows;
 using System.Windows.Input;
@@ -18,6 +19,7 @@ namespace MeterApp.Controller
     {
         private Visibility _bindTenantVisibility = Visibility.Hidden;
         private readonly Tenant? _tenant;
+        private readonly AbstractClause? _selectNotIn;
         public RecordSource<City> Cities { get; private set; } = new (DatabaseManager.Find<City>()!);
         public RecordSource<PostCode> PostCodes { get; private set; } = new(DatabaseManager.Find<PostCode>()!);
         public SourceOption StreetNumOptions { get; }
@@ -35,12 +37,14 @@ namespace MeterApp.Controller
             AfterUpdate += OnAfterUpdate;
         }
 
-        public AddressListController(Tenant tenant) : this()
+        public AddressListController(Tenant tenant, AbstractClause selectNotIn) : this()
         {
             _tenant = tenant;
+            _selectNotIn = selectNotIn;
             BindTenantVisibility = Visibility.Visible;
             AllowNewRecord = false;
-            ReadOnly = true;
+            WindowLoaded += OnWindowLoaded;
+            WindowClosed += OnWindowClosed;
         }
 
         private void BindTenant(Address address)
@@ -58,6 +62,10 @@ namespace MeterApp.Controller
             }
 
             IAbstractDatabase? db = DatabaseManager.Find<TenantAddress>() ?? throw new NullReferenceException();
+
+            List<QueryParameter> para = [new("active", 0), new("tenantId", _tenant.TenantID)];
+            db.Crud(CRUD.UPDATE, $"UPDATE TenantAddress SET Active = @active, MovedOut = CASE WHEN MovedOut IS NULL THEN CURRENT_DATE ELSE MovedOut END WHERE TenantID = @tenantId;", para);
+
             db.Model = new TenantAddress(_tenant, address);
             db.Crud(CRUD.INSERT);
 
@@ -66,6 +74,18 @@ namespace MeterApp.Controller
             ((Window?)UI)?.Close();
         }
 
+        private async void OnWindowLoaded(object? sender, RoutedEventArgs e)
+        {
+            ReloadSearchQry();
+            RecordSource.ReplaceRange(await SearchRecordAsync());
+            GoFirst();
+        }
+
+        private void OnWindowClosed(object? sender, EventArgs e)
+        {
+            WindowClosed -= OnWindowClosed;
+            Helper.GetActiveWindow()?.GetController<TenantController>()?.TenantAddressController?.OnSubFormFilter();
+        }
         private async void OnAfterUpdate(object? sender, AfterUpdateArgs e)
         {
             if (e.Is(nameof(Search))) 
@@ -89,7 +109,7 @@ namespace MeterApp.Controller
 
         protected override void Open(Address model) { }
 
-        public override AbstractClause InstantiateSearchQry() =>
+        public override AbstractClause InstantiateSearchQry() => (_selectNotIn != null) ? _selectNotIn :
         new Address().Select().All().Fields("Code").Fields("City.*")
              .From().InnerJoin(new PostCode())
              .InnerJoin(nameof(PostCode), nameof(City), "CityID")

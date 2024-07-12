@@ -1,4 +1,6 @@
-﻿using FrontEnd.Controller;
+﻿using Backend.ExtensionMethods;
+using Backend.Model;
+using FrontEnd.Controller;
 using FrontEnd.Utils;
 using MeterApp.Model;
 using MeterApp.View;
@@ -24,11 +26,23 @@ namespace MeterApp.Controller
         private void OpenAddress() 
         {
             if (CurrentRecord == null) return;
-            if (CurrentRecord.IsNewRecord()) 
-                if (!PerformUpdate()) 
+
+            if (CurrentRecord.IsNewRecord())
+                if (!PerformUpdate())
                     return;
 
-            Helper.OpenWindowDialog("Addresses", new AddressList(CurrentRecord));
+            AbstractClause selectNotIn = new Address().Select().All().Fields("Code").Fields("City.*")
+                                                      .From().InnerJoin(new PostCode()).InnerJoin(nameof(PostCode), nameof(City), "CityID")
+                                                      .Where()
+                                                        .OpenBracket()
+                                                            .Like("LOWER(StreetNum)", "@search").OR().Like("LOWER(StreetName)", "@search").OR().Like("LOWER(OtherInfo)", "@search").OR().Like("LOWER(Code)", "@search").OR().Like("LOWER(CityName)", "@search")
+                                                        .CloseBracket()
+                                                        .AND()
+                                                        .OpenBracket()
+                                                            .In("AddressID NOT", "SELECT AddressID FROM TenantAddress WHERE TenantAddress.Active = 1")
+                                                        .CloseBracket();
+
+            Helper.OpenWindowDialog("Available Addresses", new AddressList(CurrentRecord, selectNotIn));
         }
     }
 }

@@ -9,26 +9,21 @@ namespace MeterApp.View
     public partial class TenantForm : Window
     {
         public TenantForm() => InitializeComponent();
-
-        public TenantForm(TenantController controller) : this()
-        {
-            this.SetController(controller);
-        }
+        public TenantForm(TenantController controller) : this() => this.SetController(controller);
     }
 
-    public class StringConcat : IMultiValueConverter 
+    public class StringAddressConcat : IMultiValueConverter
     {
-        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
-        {
-            if (values.Length == 2)
-                return $"{values[0]}, {values[1]}"; 
-            else
-                return $"{values[0]}, {values[1]} - {values[2]}";
-        }
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture) =>
+        (values.Length == 2) ? $"{Nz(values[0])}, {Nz(values[1])}" : $"{Nz(values[0])}, {Nz(values[1])} - {Nz(values[2])}";
 
-        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture) =>
+        throw new NotImplementedException();
+
+        private string Nz(object value)
         {
-            throw new NotImplementedException();
+            if ($"{value}".Equals("{DependencyProperty.UnsetValue}")) return string.Empty;
+            return $"{value}";
         }
     }
 }
