@@ -26,6 +26,7 @@
                     <Label Grid.Column="3" Content="Other Info"/>
                     <fr:HeaderFilter Grid.Column="4" Text="Post Code" IsWithinList="True" ItemsSource="{Binding PostCodeOptions}"/>
                     <fr:HeaderFilter Grid.Column="5" Text="City" IsWithinList="True" ItemsSource="{Binding CityOptions}"/>
+                    <Label Grid.Column="6" Content="COMMAND" Visibility="{Binding BindTenantVisibility}"/>
                 </Grid>
             </fr:Lista.Header>
             <fr:Lista.ItemTemplate>
@@ -47,6 +48,11 @@
                             </fr:Combo>
                             <fr:Text Grid.Column="4" Text="{Binding PostCode.City.CityName}" IsReadOnly="True"/>
                             <fr:DeleteButton Grid.Column="5" IsWithinList="True"/>
+                            <Button Grid.Column="6" fr:Extension.IsWithinList="True" Command="{Binding BindTenantCMD}" CommandParameter="{Binding CurrentRecord}" Visibility="{Binding BindTenantVisibility}" ToolTip="Select address">
+                                <Button.Content>
+                                    <Image Source="pack://application:,,,/Images/checked.png"/>
+                                </Button.Content>
+                            </Button>
                         </Grid>
                     </fr:FormRow>
                 </DataTemplate>

@@ -7,13 +7,16 @@
         mc:Ignorable="d"
         xmlns:fr="clr-namespace:FrontEnd.Forms;assembly=FrontEnd"
         xmlns:controller="clr-namespace:MeterApp.Controller"
-        d:DataContext="{d:DesignInstance Type=controller:TenantListController, IsDesignTimeCreatable=False}"
+        d:DataContext="{d:DesignInstance Type=controller:TenantController, IsDesignTimeCreatable=False}"
         WindowStartupLocation="CenterScreen"
         WindowState="Maximized"
         Language="en-GB"
-        Title="TenantForm" Height="450" Width="800"
+        Title="Tenant Form" Height="450" Width="800"
         >
+    
     <Window.Resources>
+        <local:StringConcat x:Key="strCnct"/>
+        
         <Style TargetType="GroupBox">
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="BorderBrush" Value="Black"/>
@@ -25,7 +28,7 @@
         <fr:Form.Menu>
             <Menu>
                 <MenuItem Header="Address">
-                    <MenuItem Header="Change"/>
+                    <MenuItem Header="Set" Command="{Binding OpenAddressCMD}"/>
                     <MenuItem Header="View History"/>
                 </MenuItem>
                 <MenuItem Header="Invoices">
@@ -76,9 +79,33 @@
                 </GroupBox>
                 
                 <GroupBox Header="Current Address" Grid.Row="1" Grid.ColumnSpan="2">
-                    <!--<fr:SubForm>
-                        
-                    </fr:SubForm>-->
+                    <fr:SubForm ParentRecord="{Binding CurrentRecord}">
+                        <fr:Form DataContext="{Binding TenantAddressController}" Width="600" RecordTrackerRow="0" IsEnabled="{Binding ReadOnly}">
+                            <Grid fr:Definition.RowDefinitions="30,30,30,30,30" fr:Definition.ColumnDefinitions="70,110">
+                                <Label Grid.ColumnSpan="2">
+                                    <Label.Content>
+                                        <MultiBinding Converter="{StaticResource strCnct}">
+                                            <Binding Path="CurrentRecord.Address.StreetNum"/>
+                                            <Binding Path="CurrentRecord.Address.StreetName"/>
+                                            <Binding Path="CurrentRecord.Address.OtherInfo"/>
+                                        </MultiBinding>
+                                    </Label.Content>
+                                </Label>
+                                <Label  Grid.ColumnSpan="2" Grid.Row="1">
+                                    <Label.Content>
+                                        <MultiBinding Converter="{StaticResource strCnct}">
+                                            <Binding Path="CurrentRecord.Address.PostCode.Code"/>
+                                            <Binding Path="CurrentRecord.Address.PostCode.City.CityName"/>
+                                        </MultiBinding>
+                                    </Label.Content>
+                                </Label>
+                                <Label Grid.Row="2" Content="Moved in"/>
+                                <fr:TextBoxDate Grid.Row="2" Grid.Column="1" Date="{Binding CurrentRecord.MovedIn}"/>
+                                <Label Grid.Row="3" Content="Moved out"/>
+                                <fr:TextBoxDate Grid.Row="3" Grid.Column="1" Date="{Binding CurrentRecord.MovedOut}"/>
+                            </Grid>
+                        </fr:Form>
+                    </fr:SubForm>
                 </GroupBox>
             </Grid>
 

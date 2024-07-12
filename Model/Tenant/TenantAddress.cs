@@ -33,7 +33,7 @@ namespace MeterApp.Model
         #endregion
 
         #region Constructors
-        public TenantAddress() 
+        public TenantAddress()
         {
             SelectQry = this.Select().All()
                         .Fields("Tenant.FirstName", "Tenant.LastName", "Address.StreetNum", "Address.StreetName", "Address.OtherInfo", "Address.MeterNumber", "PostCode.*", "City.CityName")
@@ -60,6 +60,14 @@ namespace MeterApp.Model
             _active = reader.GetBoolean(3);
             _tenant = new(reader.GetInt64(4), reader.GetString(6), reader.GetString(7));
             _address = new(reader.GetInt64(5), reader.GetString(8), reader.GetString(9), reader.GetString(10), reader.GetString(11), new PostCode(reader.GetInt64(12), reader.GetString(13), new City(reader.GetInt64(14), reader.GetString(15))));
+        }
+
+        public TenantAddress(Tenant tenant, Address address) 
+        { 
+            _tenant = tenant;
+            _address = address;
+            _movedIn = DateTime.Today;
+            _active = true;
         }
         #endregion
 

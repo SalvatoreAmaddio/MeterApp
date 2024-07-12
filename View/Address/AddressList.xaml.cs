@@ -1,5 +1,6 @@
 ﻿using FrontEnd.ExtensionMethods;
 using MeterApp.Controller;
+using MeterApp.Model;
 using System.Windows.Controls;
 
 namespace MeterApp.View
@@ -10,6 +11,12 @@ namespace MeterApp.View
         {
             InitializeComponent();
             this.SetController(new AddressListController());
+        }
+
+        public AddressList(Tenant tenant)
+        {
+            InitializeComponent();
+            this.SetController(new AddressListController(tenant));
         }
     }
 }
