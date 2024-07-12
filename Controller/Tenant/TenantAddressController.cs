@@ -10,9 +10,11 @@ namespace MeterApp.Controller
     {
         private bool _enabled = false;
         public bool Enabled { get => _enabled; set => UpdateProperty(ref value, ref _enabled); }
+        public ReadingListController ReadingListController { get; } = new();
         internal TenantAddressController() 
-        { 
+        {
             AllowNewRecord = false;
+            AddSubControllers(ReadingListController);
         }
 
         public override async void OnSubFormFilter()
@@ -22,6 +24,7 @@ namespace MeterApp.Controller
             RecordSource.ReplaceRange(records);
             CurrentRecord = RecordSource.FirstOrDefault();
             Enabled = (CurrentRecord == null) ? false : true;
+            ReadingListController.OnSubFormFilter();
         }
 
         public override AbstractClause InstantiateSearchQry() =>

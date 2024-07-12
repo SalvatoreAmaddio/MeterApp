@@ -50,13 +50,14 @@ namespace MeterApp.Model
             _readingId = reader.GetInt64(0);
             _readValue = reader.GetString(1);
             _dor = reader.TryFetchDate(2);
-            _tenantAddress = new(reader.GetInt64(3), reader.TryFetchDate(4), reader.TryFetchDate(4), reader.GetBoolean(5),
-                new Tenant(reader.GetInt64(6), reader.GetString(7), reader.GetString(8)),
-                new Address(reader.GetInt64(9), reader.GetString(10), reader.GetString(11), reader.GetString(12), reader.GetString(13), 
-                            new PostCode(reader.GetInt64(14), reader.GetString(15), 
-                            new City(reader.GetInt64(16), reader.GetString(17))
-                            ))
-                );
+            _tenantAddress = new(reader.GetInt64(3));
+            //_tenantAddress = new(reader.GetInt64(3), reader.TryFetchDate(4), reader.TryFetchDate(4), reader.GetBoolean(5),
+            //    new Tenant(reader.GetInt64(6), reader.GetString(7), reader.GetString(8)),
+            //    new Address(reader.GetInt64(9), reader.GetString(10), reader.GetString(11), reader.GetString(12), reader.GetString(13), 
+            //                new PostCode(reader.GetInt64(14), reader.GetString(15), 
+            //                new City(reader.GetInt64(16), reader.GetString(17))
+            //                ))
+            //    );
         }
         #endregion
 

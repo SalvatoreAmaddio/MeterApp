@@ -13,17 +13,17 @@
         Language="en-GB"
         Title="Tenant Form" Height="450" Width="800"
         >
-    
+
     <Window.Resources>
         <local:StringAddressConcat x:Key="stringAddressConcat"/>
-        
+
         <Style TargetType="GroupBox">
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="BorderBrush" Value="Black"/>
             <Setter Property="Padding" Value="5"/>
         </Style>
     </Window.Resources>
-    
+
     <fr:Form Padding="10">
         <fr:Form.Menu>
             <Menu>
@@ -53,7 +53,7 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                
+
                 <GroupBox Header="Tenant's Info" Grid.Row="0">
                     <Grid fr:Definition.RowDefinitions="30,30,30,30,30,100" fr:Definition.ColumnDefinitions="100,200">
                         <Label Content="First Name"/>
@@ -77,7 +77,7 @@
                         <fr:DeleteButton Height="30" Width="100"/>
                     </StackPanel>
                 </GroupBox>
-                
+
                 <GroupBox Header="Current Address" Grid.Row="1" Grid.ColumnSpan="2">
                     <fr:SubForm ParentRecord="{Binding CurrentRecord}">
                         <fr:Form DataContext="{Binding TenantAddressController}" Width="600" RecordTrackerRow="0" IsEnabled="{Binding Enabled}" Padding="5">
@@ -112,7 +112,41 @@
             </Grid>
 
             <GroupBox Grid.Column="2" Header="Current Address' Readings">
-
+                <fr:SubForm ParentRecord="{Binding TenantAddressController.CurrentRecord}">
+                    <fr:FormList DataContext="{Binding TenantAddressController.ReadingListController}" IsEnabled="{Binding Enabled}">
+                        <fr:FormList.Header>
+                            <Border Background="{StaticResource DefaultWhite}">
+                                <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
+                                    <Label Content="From"/>
+                                    <fr:TextBoxDate Date="{Binding From}"/>
+                                    <Label Content="To"/>
+                                    <fr:TextBoxDate Date="{Binding To}"/>
+                                </StackPanel>
+                            </Border>
+                        </fr:FormList.Header>
+                        <fr:Lista ItemsSource="{Binding RecordSource}" SelectedItem="{Binding CurrentRecord}">
+                            <fr:Lista.Header>
+                                <Grid fr:Definition.ColumnDefinitions="110,100,100">
+                                    <Label Grid.Column="1" Content="Date"/>
+                                    <Label Grid.Column="2" Content="Value"/>
+                                    <Label Grid.Column="3" Grid.ColumnSpan="2" Content="COMMANDS"/>
+                                </Grid>
+                            </fr:Lista.Header>
+                            <fr:Lista.ItemTemplate>
+                                <DataTemplate>
+                                    <fr:FormRow>
+                                        <Grid fr:Definition.RowDefinitions="30" fr:Definition.ColumnDefinitions="110,100,50,50">
+                                            <fr:TextBoxDate Date="{Binding DOR}"/>
+                                            <fr:Text Grid.Column="1" Text="{Binding ReadValue}"/>
+                                            <fr:SaveButton IsWithinList="True" Grid.Column="2"/>
+                                            <fr:DeleteButton IsWithinList="True" Grid.Column="3"/>
+                                        </Grid>
+                                    </fr:FormRow>
+                                </DataTemplate>
+                            </fr:Lista.ItemTemplate>
+                        </fr:Lista>
+                    </fr:FormList>
+                </fr:SubForm>
             </GroupBox>
         </Grid>
     </fr:Form>
