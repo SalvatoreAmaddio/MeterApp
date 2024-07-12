@@ -12,15 +12,22 @@ namespace MeterApp.Controller
     {
         public TenantAddressController TenantAddressController { get; } = new();
         public ICommand OpenAddressCMD { get; }
+        public ICommand OpenTenantAddressCMD { get; }
         internal TenantController()
         {
             OpenAddressCMD = new CMD(OpenAddress);
+            OpenTenantAddressCMD = new CMD(OpenTenantAddress);
             AddSubControllers(TenantAddressController);
         }
 
         public TenantController(Tenant tenant) : this()
         {
             GoAt(tenant);
+        }
+
+        private void OpenTenantAddress() 
+        {
+            new TenantAddressForm(CurrentRecord).ShowDialog();
         }
 
         private void OpenAddress() 

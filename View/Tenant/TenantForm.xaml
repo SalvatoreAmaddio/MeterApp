@@ -29,7 +29,7 @@
             <Menu>
                 <MenuItem Header="Address">
                     <MenuItem Header="Set" Command="{Binding OpenAddressCMD}"/>
-                    <MenuItem Header="View History"/>
+                    <MenuItem Header="View History" Command="{Binding OpenTenantAddressCMD}"/>
                 </MenuItem>
                 <MenuItem Header="Invoices">
                     <MenuItem Header="Make"/>

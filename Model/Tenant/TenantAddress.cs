@@ -30,6 +30,7 @@ namespace MeterApp.Model
         public Tenant? Tenant { get => _tenant; set => UpdateProperty(ref value, ref _tenant); }
         [FK]
         public Address? Address { get => _address; set => UpdateProperty(ref value, ref _address); }
+        public string? StreetNum => Address?.StreetNum;
         #endregion
 
         #region Constructors

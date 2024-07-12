@@ -20,7 +20,7 @@ namespace MeterApp.Controller
         private Visibility _bindTenantVisibility = Visibility.Hidden;
         private readonly Tenant? _tenant;
         private readonly AbstractClause? _selectNotIn;
-        public RecordSource<City> Cities { get; private set; } = new (DatabaseManager.Find<City>()!);
+        public RecordSource<City> Cities { get; private set; } = new(DatabaseManager.Find<City>()!);
         public RecordSource<PostCode> PostCodes { get; private set; } = new(DatabaseManager.Find<PostCode>()!);
         public SourceOption StreetNumOptions { get; }
         public SourceOption PostCodeOptions { get; }
