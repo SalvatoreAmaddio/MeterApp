@@ -1,0 +1,51 @@
+﻿<Page x:Class="MeterApp.View.TenantList"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:MeterApp.View"
+      mc:Ignorable="d" 
+      xmlns:fr="clr-namespace:FrontEnd.Forms;assembly=FrontEnd"
+      xmlns:controller="clr-namespace:MeterApp.Controller"
+      d:DataContext="{d:DesignInstance Type=controller:TenantListController, IsDesignTimeCreatable=False}"
+      d:DesignHeight="450" d:DesignWidth="800"
+      Language="en-GB"
+      Title="TenantList">
+
+    <fr:FormList>
+        <fr:FormList.Header>
+            <Border Background="{StaticResource DefaultWhite}" Padding="5">
+                <StackPanel VerticalAlignment="Center">
+                    <fr:Text Placeholder="Search..." Text="{Binding Search}"/>
+                </StackPanel>
+            </Border>
+        </fr:FormList.Header>
+        <fr:Lista ItemsSource="{Binding RecordSource}" SelectedItem="{Binding CurrentRecord}">
+            <fr:Lista.Header>
+                <Grid fr:Definition.ColumnDefinitions="160,160,80,100,200,100">
+                    <Label Grid.Column="1" Content="FIRST NAME"/>
+                    <Label Grid.Column="2" Content="LAST NAME"/>
+                    <Label Grid.Column="3" Content="DOB"/>
+                    <Label Grid.Column="4" Content="PHONE NUM"/>
+                    <Label Grid.Column="5" Content="EMAIL"/>
+                    <Label Grid.Column="6" Content="COMMANDS"/>
+                </Grid>
+            </fr:Lista.Header>
+            <fr:Lista.ItemTemplate>
+                <DataTemplate>
+                    <fr:FormRow>
+                        <Grid fr:Definition.RowDefinitions="30" fr:Definition.ColumnDefinitions="160,160,80,100,200,50,50">
+                            <Label Grid.Column="0" Content="{Binding FirstName}"/>
+                            <Label Grid.Column="1" Content="{Binding LastName}"/>
+                            <Label Grid.Column="2" Content="{Binding DOB}" HorizontalAlignment="Center"/>
+                            <Label Grid.Column="3" Content="{Binding PhoneNumber}" HorizontalAlignment="Center"/>
+                            <Label Grid.Column="4" Content="{Binding Email}"/>
+                            <fr:DeleteButton IsWithinList="True" Grid.Column="5"/>
+                            <fr:OpenButton IsWithinList="True" Grid.Column="6"/>
+                        </Grid>
+                    </fr:FormRow>
+                </DataTemplate>
+            </fr:Lista.ItemTemplate>
+        </fr:Lista>        
+    </fr:FormList>
+</Page>

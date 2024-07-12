@@ -26,10 +26,18 @@
 
         <TabControl x:Name="MainTab" Grid.Row="1">
             <TabItem Header="Tenants">
-                
+                <Frame>
+                    <Frame.Content>
+                        <local:TenantList/>
+                    </Frame.Content>
+                </Frame>
             </TabItem>
             <TabItem Header="Addresses">
-
+                <Frame>
+                    <Frame.Content>
+                        <local:AddressList/>
+                    </Frame.Content>
+                </Frame>
             </TabItem>
             <TabItem Header="Invoices">
 

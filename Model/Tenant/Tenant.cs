@@ -13,6 +13,7 @@ namespace MeterApp.Model
         private string _firstName = string.Empty;
         private string _lastName = string.Empty;
         private DateTime? _dob;
+        private string _phoneNumber = string.Empty;
         private string _email = string.Empty;
         private string _notes = string.Empty;
         #endregion
@@ -26,6 +27,8 @@ namespace MeterApp.Model
         public string LastName { get => _lastName; set => UpdateProperty(ref value, ref _lastName); }
         [Field]
         public DateTime? DOB { get => _dob; set => UpdateProperty(ref value, ref _dob); }
+        [Field]
+        public string PhoneNumber { get => _phoneNumber; set => UpdateProperty(ref value, ref _phoneNumber); }
         [Field]
         public string Email { get => _email; set => UpdateProperty(ref value, ref _email); }
         [Field]
@@ -46,8 +49,9 @@ namespace MeterApp.Model
             _firstName = reader.GetString(1);
             _lastName = reader.GetString(2);
             _dob = reader.TryFetchDate(3);
-            _email = reader.GetString(4);
-            _notes = reader.GetString(5);
+            _phoneNumber = reader.GetString(4);
+            _email = reader.GetString(5);
+            _notes = reader.GetString(6);
         }
         #endregion
 

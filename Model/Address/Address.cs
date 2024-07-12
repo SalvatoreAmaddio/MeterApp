@@ -33,7 +33,7 @@ namespace MeterApp.Model
         #endregion
 
         #region Constructor
-        public Address() 
+        public Address()
         { 
             SelectQry = this.Select().All().Fields("Code").Fields("City.*")
                         .From().InnerJoin(new PostCode())

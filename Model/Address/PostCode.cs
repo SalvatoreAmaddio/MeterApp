@@ -39,6 +39,6 @@ namespace MeterApp.Model
         }
         #endregion
 
-        public override string ToString() => $"{Code}, {City}";
+        public override string ToString() => $"{Code}";
     }
 }
